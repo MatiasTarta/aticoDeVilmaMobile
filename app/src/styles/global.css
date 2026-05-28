@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Mea+Culpa&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #0a0a0a;
+  --bg2:       #111111;
+  --bg3:       #1a1a1a;
+  --card:      rgba(255,255,255,0.06);
+  --card-hover:rgba(255,255,255,0.10);
+  --border:    rgba(255,255,255,0.08);
+  --teal:      #4ecdc4;
+  --teal-dim:  rgba(78,205,196,0.15);
+  --green:     #51cf66;
+  --text:      #e8e0d5;
+  --text-dim:  #7a7068;
+  --font-title:'Mea Culpa', cursive;
+  --font-body: 'Crimson Pro', Georgia, serif;
+  --radius:    14px;
+  --max-w:     430px;
+}
+
+html, body, #root {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.app-shell {
+  min-height: 100dvh;
+  max-width: var(--max-w);
+  margin: 0 auto;
+  position: relative;
+  overflow-x: hidden;
+}
+
+button { cursor: pointer; font-family: var(--font-body); }
+input, select { font-family: var(--font-body); }
