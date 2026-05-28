@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "dev": "concurrently \"cd backend && node server.js\" \"cd app && npm run dev\""
+  },
+  "dependencies": {
+    "concurrently": "latest"
+  }
+}
