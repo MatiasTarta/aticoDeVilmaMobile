@@ -1,52 +1,82 @@
 .cuad {
   min-height: 100dvh;
-  display: flex; flex-direction: column;
+  display: flex;
+  flex-direction: column;
   background: var(--bg);
 }
 
 /* Header */
 .cuad-header {
-  display: flex; align-items: center; justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 1rem 1.2rem 0.8rem;
   border-bottom: 1px solid var(--border);
   background: var(--bg2);
-  position: sticky; top: 0; z-index: 10;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .cuad-back {
-  background: none; border: none;
-  color: var(--teal); font-size: 0.9rem;
-  padding: 0.3rem 0; letter-spacing: 0.02em;
+  background: none;
+  border: none;
+  color: var(--teal);
+  font-size: 0.9rem;
+  padding: 0.3rem 0;
+  letter-spacing: 0.02em;
 }
 
 .cuad-titulo {
   font-family: var(--font-title);
-  font-size: 1.8rem; font-weight: 400;
+  font-size: 1.8rem;
+  font-weight: 400;
   color: var(--text);
 }
 
 .cuad-crear-top {
-  background: var(--green); border: none;
-  color: #0a0a0a; font-size: 1.3rem; font-weight: 700;
-  width: 36px; height: 36px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 2px 12px rgba(81,207,102,0.35);
+  background: var(--green);
+  border: none;
+  color: #0a0a0a;
+  font-size: 1.3rem;
+  font-weight: 700;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 12px rgba(81, 207, 102, 0.35);
   transition: transform 0.2s;
 }
-.cuad-crear-top:hover { transform: scale(1.1); }
+
+.cuad-crear-top:hover {
+  transform: scale(1.1);
+}
 
 /* Body */
-.cuad-body { flex: 1; padding: 1rem; }
+.cuad-body {
+  flex: 1;
+  padding: 1rem;
+}
 
 .cuad-estado {
-  text-align: center; padding: 3rem 1rem;
-  color: var(--text-dim); font-style: italic; font-size: 1rem;
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--text-dim);
+  font-style: italic;
+  font-size: 1rem;
 }
-.cuad-error { color: #ef5350; }
+
+.cuad-error {
+  color: #ef5350;
+}
 
 /* Grid */
 .cuad-grid {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
 }
 
 .cuad-card {
@@ -56,37 +86,55 @@
   overflow: hidden;
   transition: background 0.2s, transform 0.2s;
 }
+
 .cuad-card:hover {
   background: var(--card-hover);
   transform: translateY(-2px);
 }
 
 .cuad-card-img-wrap {
-  width: 100%; aspect-ratio: 1;
+  width: 100%;
+  aspect-ratio: 1;
   background: var(--bg3);
   overflow: hidden;
-  display: flex; align-items: center; justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
 .cuad-card-img-wrap img {
-  width: 100%; height: 100%; object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .cuad-card-info {
   padding: 0.6rem 0.7rem 0.8rem;
-  display: flex; flex-direction: column; gap: 0.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
 }
 
 .cuad-card-nombre {
-  font-size: 0.88rem; font-weight: 600;
-  color: var(--text); line-height: 1.3;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.3;
 }
 
-.cuad-card-tags { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+.cuad-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
 
 .cuad-tag {
-  font-size: 0.65rem; font-weight: 600;
-  text-transform: uppercase; letter-spacing: 0.06em;
-  padding: 0.15rem 0.45rem; border-radius: 100px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.15rem 0.45rem;
+  border-radius: 100px;
   color: var(--tag-color, #888);
   background: color-mix(in srgb, var(--tag-color, #888) 15%, transparent);
   border: 1px solid color-mix(in srgb, var(--tag-color, #888) 30%, transparent);
@@ -94,43 +142,52 @@
 
 .cuad-tag-tipo {
   font-size: 0.65rem;
-  color: var(--text-dim); font-style: italic;
+  color: var(--text-dim);
+  font-style: italic;
   padding: 0.15rem 0;
 }
 
-/* Paginación */
-.cuad-pag {
-  padding: 0.8rem 1rem 1.2rem;
-  border-top: 1px solid var(--border);
-  background: var(--bg2);
-  display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
+/* Contador */
+.cuad-counter {
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.5rem 1rem 0;
 }
 
-.cuad-pag-info {
-  font-size: 0.75rem; color: var(--text-dim);
+/* Sentinel / infinite scroll */
+.cuad-sentinel {
+  padding: 1.5rem 0 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cuad-spinner {
+  font-size: 0.85rem;
+  color: var(--teal);
+  font-style: italic;
   letter-spacing: 0.04em;
+  animation: pulse 1.2s ease-in-out infinite;
 }
 
-.cuad-pag-controls {
-  display: flex; gap: 0.4rem;
+.cuad-fin {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
 }
-.cuad-pag-controls button {
-  background: var(--bg3); border: 1px solid var(--border);
-  color: var(--text); width: 38px; height: 38px;
-  border-radius: 8px; font-size: 1rem;
-  transition: background 0.15s, color 0.15s;
-}
-.cuad-pag-controls button:hover:not(:disabled) {
-  background: var(--teal-dim); color: var(--teal); border-color: var(--teal);
-}
-.cuad-pag-controls button:disabled { opacity: 0.3; cursor: default; }
 
-.cuad-pag-select {
-  display: flex; align-items: center; gap: 0.5rem;
-  font-size: 0.8rem; color: var(--text-dim);
-}
-.cuad-pag-select select {
-  background: var(--bg3); border: 1px solid var(--border);
-  color: var(--text); padding: 0.3rem 0.5rem;
-  border-radius: 6px; font-size: 0.8rem;
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+
+  50% {
+    opacity: 1;
+  }
 }
