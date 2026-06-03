@@ -5,7 +5,7 @@ import './CrearInstrumento.css'
 interface Props { onNavigate: (s: Screen) => void }
 
 const CATEGORIAS = ['teclado', 'percusion', 'cuerda', 'viento', 'electronico']
-const ESCALAS    = ['ninguna','DOr','DOm','RE','REm','MI','FA','SOL','LAm']
+const ESCALAS = ['ninguna', 'DOr', 'DOm', 'RE', 'REm', 'MI', 'FA', 'SOL', 'LAm']
 
 export default function CrearInstrumento({ onNavigate }: Props) {
   const [form, setForm] = useState({
@@ -13,7 +13,7 @@ export default function CrearInstrumento({ onNavigate }: Props) {
     imagen: '', link: '', carpetaSonidos: ''
   })
   const [enviando, setEnviando] = useState(false)
-  const [msg, setMsg]           = useState<{ tipo: 'ok' | 'error'; texto: string } | null>(null)
+  const [msg, setMsg] = useState<{ tipo: 'ok' | 'error'; texto: string } | null>(null)
 
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }))
 
@@ -72,10 +72,6 @@ export default function CrearInstrumento({ onNavigate }: Props) {
 
         <Field label="URL Imagen" hint="Ruta a la imagen del instrumento">
           <input value={form.imagen} onChange={e => set('imagen', e.target.value)} placeholder="../assets/img/miinstrumento.png" />
-        </Field>
-
-        <Field label="Página del instrumento" hint="Vista individual, dejar vacío si está en desarrollo">
-          <input value={form.link} onChange={e => set('link', e.target.value)} placeholder="./individualMiInstrumento.html" />
         </Field>
 
         <Field label="Carpeta de sonidos" hint="Ruta donde están los archivos de audio">
