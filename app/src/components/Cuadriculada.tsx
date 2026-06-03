@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Screen } from '../App'
 import './Cuadriculada.css'
 
@@ -19,13 +19,12 @@ interface ApiResponse {
   datos: Instrumento[]
 }
 
-const POR_PAGINA = 6
 
 const CATEGORIA_COLOR: Record<string, string> = {
-  teclado:     '#4ecdc4',
-  percusion:   '#f9a825',
-  cuerda:      '#ef5350',
-  viento:      '#ab47bc',
+  teclado: '#4ecdc4',
+  percusion: '#f9a825',
+  cuerda: '#ef5350',
+  viento: '#ab47bc',
   electronico: '#42a5f5',
 }
 
@@ -33,55 +32,57 @@ interface Props { onNavigate: (s: Screen) => void }
 
 export default function Cuadriculada({ onNavigate }: Props) {
   const [instrumentos, setInstrumentos] = useState<Instrumento[]>([])
-  const [total, setTotal]               = useState(0)
-  const [cargando, setCargando]         = useState(false)
-  const [error, setError]               = useState('')
-  const [hayMas, setHayMas]             = useState(true)
+  const [cargando, setCargando] = useState(false)
+  const [error, setError] = useState('')
 
   const observerRef = useRef<IntersectionObserver | null>(null)
   const sentinelRef = useRef<HTMLDivElement | null>(null)
   const cargandoRef = useRef(false)
-  const fromRef     = useRef(0)
-  const hayMasRef   = useRef(true)
+  const hayMasRef = useRef(true)
+  const totalDataRef = useRef<number>(12)
 
-  const cargarMas = useCallback(async (offset: number) => {
-    if (cargandoRef.current) return
-    cargandoRef.current = true
+  const cargarMas = useCallback(async () => {
     setCargando(true)
     setError('')
     try {
-      const res = await fetch(`/api/instrumentos?cantidad=${POR_PAGINA}&from=${offset}`)
-      if (!res.ok) throw new Error(`HTTP ${res.status}`)
-      const data: ApiResponse = await res.json()
-      setInstrumentos(prev => offset === 0 ? data.datos : [...prev, ...data.datos])
-      setTotal(data.total)
-      const nuevoFrom = offset + data.datos.length
-      fromRef.current = nuevoFrom
-      const mas = nuevoFrom < data.total
-      hayMasRef.current = mas
-      setHayMas(mas)
+      const res1 = await fetch(`/api/instrumentos?cantidad=1&from=0`)
+      const data1: ApiResponse = await res1.json()
+      const res2 = await fetch(`/api/instrumentos?cantidad=${data1.total}&from=0`)
+      const data2: ApiResponse = await res2.json()
+      setInstrumentos(data2.datos)
     } catch {
       setError('No se pudo conectar al servidor. ¿Está corriendo en localhost:3000?')
     } finally {
-      cargandoRef.current = false
       setCargando(false)
     }
   }, [])
 
   // carga inicial
-  useEffect(() => { cargarMas(0) }, [])
+  useEffect(() => {
+    const fetchTotal = async () => {
+      try {
+        const totalRes = await fetch(`/api/instrumentos?cantidad=1&from=0`)
+        const totalData: ApiResponse = await totalRes.json()
+        totalDataRef.current = totalData.cantidad
+      } catch (error) {
+        console.error('Error fetching total:', error)
+      }
+      cargarMas()
+    }
+    fetchTotal()
+  }, [cargarMas])
 
   // IntersectionObserver
   useEffect(() => {
     observerRef.current = new IntersectionObserver(entries => {
       if (entries[0].isIntersecting && hayMasRef.current && !cargandoRef.current) {
-        cargarMas(fromRef.current)
+        cargarMas()
       }
     }, { threshold: 0.1 })
 
     if (sentinelRef.current) observerRef.current.observe(sentinelRef.current)
     return () => observerRef.current?.disconnect()
-  }, [])
+  }, [cargarMas])
 
   return (
     <div className="cuad">
@@ -91,9 +92,7 @@ export default function Cuadriculada({ onNavigate }: Props) {
         <button className="cuad-crear-top" onClick={() => onNavigate('crear')}>＋</button>
       </div>
 
-      {total > 0 && (
-        <div className="cuad-counter">{instrumentos.length} de {total} instrumentos</div>
-      )}
+
 
       <div className="cuad-body">
         {error && <div className="cuad-estado cuad-error">{error}</div>}
@@ -131,9 +130,6 @@ export default function Cuadriculada({ onNavigate }: Props) {
 
         <div ref={sentinelRef} className="cuad-sentinel">
           {cargando && <div className="cuad-spinner">Cargando...</div>}
-          {!hayMas && instrumentos.length > 0 && (
-            <div className="cuad-fin">✦ fin de la colección ✦</div>
-          )}
         </div>
       </div>
     </div>
