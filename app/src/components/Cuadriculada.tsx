@@ -28,7 +28,7 @@ const CATEGORIA_COLOR: Record<string, string> = {
   electronico: '#42a5f5',
 }
 
-interface Props { onNavigate: (s: Screen) => void }
+interface Props { onNavigate: (s: Screen, id?: number) => void }
 
 export default function Cuadriculada({ onNavigate }: Props) {
   const [instrumentos, setInstrumentos] = useState<Instrumento[]>([])
@@ -101,30 +101,29 @@ export default function Cuadriculada({ onNavigate }: Props) {
         )}
 
         <div className="cuad-grid">
-          {instrumentos.map(inst => (
-            <div className="cuad-card" key={inst.id}>
-              <div className="cuad-card-img-wrap">
-                <img
-                  src={inst.imagen}
-                  alt={inst.nombre}
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src = 'https://placehold.co/150x150/1a1a1a/4ecdc4?text=♪'
-                  }}
-                />
-              </div>
-              <div className="cuad-card-info">
-                <p className="cuad-card-nombre">{inst.nombre}</p>
-                <div className="cuad-card-tags">
-                  <span
-                    className="cuad-tag"
-                    style={{ '--tag-color': CATEGORIA_COLOR[inst.categoria] ?? '#888' } as React.CSSProperties}
-                  >
-                    {inst.categoria}
-                  </span>
-                  <span className="cuad-tag-tipo">{inst.tipoSonido}</span>
-                </div>
+          {instrumentos.map(inst => (<div className="cuad-card" key={inst.id} onClick={() => onNavigate('vistaInstrumento' as Screen, inst.id)}>
+            <div className="cuad-card-img-wrap">
+              <img
+                src={inst.imagen}
+                alt={inst.nombre}
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = 'https://placehold.co/150x150/1a1a1a/4ecdc4?text=♪'
+                }}
+              />
+            </div>
+            <div className="cuad-card-info">
+              <p className="cuad-card-nombre">{inst.nombre}</p>
+              <div className="cuad-card-tags">
+                <span
+                  className="cuad-tag"
+                  style={{ '--tag-color': CATEGORIA_COLOR[inst.categoria] ?? '#888' } as React.CSSProperties}
+                >
+                  {inst.categoria}
+                </span>
+                <span className="cuad-tag-tipo">{inst.tipoSonido}</span>
               </div>
             </div>
+          </div>
           ))}
         </div>
 

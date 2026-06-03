@@ -1,19 +1,32 @@
 import { useState } from 'react'
-import Home from './components/Home'
-import Cuadriculada from './components/Cuadriculada'
 import CrearInstrumento from './components/CrearInstrumento'
+import Cuadriculada from './components/Cuadriculada'
+import Home from './components/Home'
+import VistaInstrumento from './components/VistaInstrumento'
 import './styles/global.css'
 
-export type Screen = 'home' | 'cuadriculada' | 'crear'
+export type Screen = 'home' | 'cuadriculada' | 'crear' | 'vistaInstrumento'
+
+interface AppState {
+  screen: Screen
+  instrumentoId?: number
+}
 
 export default function App() {
-  const [screen, setScreen] = useState<Screen>('home')
+  const [state, setState] = useState<AppState>({ screen: 'home' })
+
+  const navegar = (screen: Screen, instrumentoId?: number) => {
+    setState({ screen, instrumentoId })
+  }
 
   return (
     <div className="app-shell">
-      {screen === 'home' && <Home onNavigate={setScreen} />}
-      {screen === 'cuadriculada' && <Cuadriculada onNavigate={setScreen} />}
-      {screen === 'crear' && <CrearInstrumento onNavigate={setScreen} />}
+      {state.screen === 'home' && <Home onNavigate={navegar} />}
+      {state.screen === 'cuadriculada' && <Cuadriculada onNavigate={navegar} />}
+      {state.screen === 'crear' && <CrearInstrumento onNavigate={navegar} />}
+      {state.screen === 'vistaInstrumento' && (
+        <VistaInstrumento id={state.instrumentoId!} onNavigate={navegar} />
+      )}
     </div>
   )
 }
