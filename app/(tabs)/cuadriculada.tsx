@@ -27,8 +27,7 @@ interface ApiResponse {
     datos: Instrumento[];
 }
 
-const API_URL =
-    process.env.EXPO_PUBLIC_API_URL || 'http://192.168.1.100:3000';
+const API_URL = 'http://localhost:3000';
 
 const CATEGORIA_COLOR: Record<string, string> = {
     teclado: '#4ecdc4',
@@ -45,22 +44,36 @@ export default function Cuadriculada() {
 
     const cargarInstrumentos = useCallback(async () => {
         try {
-            console.log('INICIO');
+            setLoading(true); // Aseguramos que muestre cargando al iniciar
+            setError('');
+
+            console.log('INICIO FETCH');
             console.log('API_URL:', API_URL);
 
+            // NOTA: Cambié cantidad=1 por cantidad=20 para que traiga más elementos
             const res = await fetch(
-                `${API_URL}/api/instrumentos?cantidad=1&from=0`
+                `${API_URL}/api/instrumentos?cantidad=20&from=0`
             );
 
-            console.log('FETCH TERMINÓ');
+            if (!res.ok) {
+                throw new Error(`Error en el servidor: ${res.status}`);
+            }
 
-            const text = await res.text();
+            // Parseamos la respuesta como JSON en lugar de texto plano
+            const data: ApiResponse = await res.json();
 
-            console.log('RESPUESTA CRUDA:');
-            console.log(text);
+            console.log('DATOS RECIBIDOS:', data);
 
-        } catch (err) {
+            // Guardamos el array 'datos' que viene de tu APIResponse en el estado
+            setInstrumentos(data.datos || []);
+
+        } catch (err: any) {
             console.error('ERROR REAL:', err);
+            setError(err.message || 'No se pudo conectar con el servidor');
+        } finally {
+            // Esto se ejecuta SIEMPRE (si sale bien o si sale mal)
+            // Así nos aseguramos de sacar el ActivityIndicator de la pantalla
+            setLoading(false);
         }
     }, []);
 
