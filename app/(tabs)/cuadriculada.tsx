@@ -10,6 +10,7 @@ import {
     View,
 } from 'react-native';
 
+// Interfaces del modelo de datos
 interface Instrumento {
     id: number;
     nombre: string;
@@ -27,6 +28,7 @@ interface ApiResponse {
     datos: Instrumento[];
 }
 
+
 const API_URL = 'http://localhost:3000';
 
 const CATEGORIA_COLOR: Record<string, string> = {
@@ -39,102 +41,73 @@ const CATEGORIA_COLOR: Record<string, string> = {
 
 export default function Cuadriculada() {
     const [instrumentos, setInstrumentos] = useState<Instrumento[]>([]);
-    const [loading, setLoading] = useState(true);
+    const [cargando, setCargando] = useState(true);
     const [error, setError] = useState('');
 
     const cargarInstrumentos = useCallback(async () => {
+        setCargando(true);
+        setError('');
         try {
-            setLoading(true); // Aseguramos que muestre cargando al iniciar
-            setError('');
-
-            console.log('INICIO FETCH');
-            console.log('API_URL:', API_URL);
-
-            // NOTA: Cambié cantidad=1 por cantidad=20 para que traiga más elementos
-            const res = await fetch(
-                `${API_URL}/api/instrumentos?cantidad=20&from=0`
-            );
-
-            if (!res.ok) {
-                throw new Error(`Error en el servidor: ${res.status}`);
-            }
-
-            // Parseamos la respuesta como JSON en lugar de texto plano
+            // Traemos un número alto directamente para evitar el doble fetch asincrónico
+            const res = await fetch(`${API_URL}/api/instrumentos?cantidad=50&from=0`);
+            if (!res.ok) throw new Error();
             const data: ApiResponse = await res.json();
 
-            console.log('DATOS RECIBIDOS:', data);
-
-            // Guardamos el array 'datos' que viene de tu APIResponse en el estado
             setInstrumentos(data.datos || []);
-
-        } catch (err: any) {
-            console.error('ERROR REAL:', err);
-            setError(err.message || 'No se pudo conectar con el servidor');
+        } catch (err) {
+            setError('No se pudo conectar al servidor.');
         } finally {
-            // Esto se ejecuta SIEMPRE (si sale bien o si sale mal)
-            // Así nos aseguramos de sacar el ActivityIndicator de la pantalla
-            setLoading(false);
+            setCargando(false);
         }
     }, []);
 
+    // Carga inicial al montar el componente
     useEffect(() => {
         cargarInstrumentos();
     }, [cargarInstrumentos]);
 
-    const renderInstrumento = ({
-        item,
-    }: {
-        item: Instrumento;
-    }) => (
+    // Renderizador de cada tarjeta (Card) de instrumento
+    const renderInstrumento = ({ item }: { item: Instrumento }) => (
         <Pressable
             style={styles.card}
             onPress={() => {
-                console.log('Instrumento:', item.id);
-
-                // habilitar cuando exista la pantalla
-                // router.push(`/instrumento/${item.id}` as any);
+                // Navegación nativa de Expo Router hacia el detalle del instrumento
+                router.push(`/instrumento/${item.id}` as any);
             }}
         >
-            <Image
-                source={{
-                    uri:
-                        item.imagen ||
-                        'https://placehold.co/300x300/1a1a1a/4ecdc4?text=♪',
-                }}
-                style={styles.image}
-            />
+            <View style={styles.imageWrap}>
+                <Image
+                    source={{
+                        uri: item.imagen || 'https://placehold.co/150x150/1a1a1a/4ecdc4?text=♪',
+                    }}
+                    style={styles.image}
+                    resizeMode="cover"
+                />
+            </View>
 
-            <View style={styles.info}>
-                <Text style={styles.nombre}>
+            <View style={styles.cardInfo}>
+                <Text style={styles.cardNombre} numberOfLines={2}>
                     {item.nombre}
                 </Text>
 
-                <View style={styles.tags}>
+                <View style={styles.cardTags}>
                     <View
                         style={[
                             styles.tag,
-                            {
-                                borderColor:
-                                    CATEGORIA_COLOR[item.categoria] ?? '#888',
-                            },
+                            { borderColor: CATEGORIA_COLOR[item.categoria] ?? '#888' },
                         ]}
                     >
                         <Text
                             style={[
                                 styles.tagText,
-                                {
-                                    color:
-                                        CATEGORIA_COLOR[item.categoria] ?? '#888',
-                                },
+                                { color: CATEGORIA_COLOR[item.categoria] ?? '#888' },
                             ]}
                         >
                             {item.categoria}
                         </Text>
                     </View>
 
-                    <Text style={styles.tipo}>
-                        {item.tipoSonido}
-                    </Text>
+                    <Text style={styles.tagTipo}>{item.tipoSonido}</Text>
                 </View>
             </View>
         </Pressable>
@@ -142,49 +115,46 @@ export default function Cuadriculada() {
 
     return (
         <View style={styles.container}>
+            {/* HEADER */}
             <View style={styles.header}>
                 <Pressable onPress={() => router.back()}>
-                    <Text style={styles.back}>
-                        ← Inicio
-                    </Text>
+                    <Text style={styles.backButton}>← Inicio</Text>
                 </Pressable>
 
-                <Text style={styles.title}>
-                    Instrumentos
-                </Text>
+                <Text style={styles.titulo}>Instrumentos</Text>
 
-                <Pressable
-                    style={styles.addButton}
-                    onPress={() => {
-                        console.log('Crear');
-                        // router.push('/crear');
-                    }}
-                >
-                    <Text style={styles.addText}>+</Text>
+                <Pressable style={styles.crearButton} onPress={() => router.push('/crear')}>
+                    <Text style={styles.crearButtonText}>＋</Text>
                 </Pressable>
             </View>
 
+            {/* CUERPO PRINCIPAL */}
             {error ? (
-                <Text style={styles.error}>
-                    {error}
-                </Text>
-            ) : loading ? (
-                <ActivityIndicator
-                    size="large"
-                    color="#4ecdc4"
-                    style={{ marginTop: 50 }}
-                />
+                <View style={styles.estadoContainer}>
+                    <Text style={[styles.estadoTexto, styles.errorTexto]}>{error}</Text>
+                </View>
+            ) : cargando && instrumentos.length === 0 ? (
+                <View style={styles.estadoContainer}>
+                    <ActivityIndicator size="large" color="#4ecdc4" />
+                    <Text style={styles.spinnerTexto}>Cargando...</Text>
+                </View>
             ) : (
                 <FlatList
                     data={instrumentos}
                     renderItem={renderInstrumento}
                     keyExtractor={(item) => item.id.toString()}
-                    numColumns={2}
-                    contentContainerStyle={styles.list}
+                    numColumns={2} // Reemplaza al 'display: grid' de CSS
+                    columnWrapperStyle={styles.gridRow}
+                    contentContainerStyle={styles.listContainer}
                     ListEmptyComponent={
-                        <Text style={styles.empty}>
-                            No hay instrumentos
-                        </Text>
+                        <View style={styles.estadoContainer}>
+                            <Text style={styles.estadoTexto}>No hay instrumentos.</Text>
+                        </View>
+                    }
+                    ListFooterComponent={
+                        cargando ? (
+                            <ActivityIndicator size="small" color="#4ecdc4" style={{ marginVertical: 20 }} />
+                        ) : null
                     }
                 />
             )}
@@ -192,113 +162,123 @@ export default function Cuadriculada() {
     );
 }
 
+// ESTILOS (Migrados directos de tu archivo .css original)
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#0a0a0a',
+        backgroundColor: '#0a0a0a', // var(--bg)
     },
-
     header: {
-        paddingTop: 60,
+        paddingTop: 60, // Espacio para la barra de estado del celular
         paddingHorizontal: 16,
         paddingBottom: 12,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
+        backgroundColor: '#151515', // var(--bg2)
+        borderBottomWidth: 1,
+        borderColor: '#222', // var(--border)
     },
-
-    back: {
-        color: '#4ecdc4',
-        fontSize: 14,
+    backButton: {
+        color: '#4ecdc4', // var(--teal)
+        fontSize: 14.5,
+        fontWeight: '500',
     },
-
-    title: {
-        color: '#e8e0d5',
-        fontSize: 28,
-        fontStyle: 'italic',
+    titulo: {
+        fontSize: 24,
+        fontWeight: '400',
+        color: '#fff', // var(--text)
     },
-
-    addButton: {
+    crearButton: {
+        backgroundColor: '#51cf66', // var(--green)
         width: 36,
         height: 36,
         borderRadius: 18,
-        backgroundColor: '#51cf66',
-        justifyContent: 'center',
         alignItems: 'center',
+        justifyContent: 'center',
     },
-
-    addText: {
-        fontSize: 24,
-        fontWeight: '700',
+    crearButtonText: {
         color: '#0a0a0a',
+        fontSize: 18,
+        fontWeight: '700',
     },
-
-    list: {
+    listContainer: {
         padding: 10,
     },
-
-    card: {
-        flex: 1,
-        margin: 6,
-        backgroundColor: '#151515',
-        borderRadius: 14,
-        overflow: 'hidden',
-        borderWidth: 1,
-        borderColor: '#222',
+    gridRow: {
+        justifyContent: 'space-between',
     },
-
-    image: {
+    card: {
+        flex: 0.485, // Distribuye proporcionalmente las 2 columnas del grid
+        marginBottom: 12,
+        backgroundColor: '#151515', // var(--card)
+        borderWidth: 1,
+        borderColor: '#222', // var(--border)
+        borderRadius: 12,
+        overflow: 'hidden',
+    },
+    imageWrap: {
         width: '100%',
         aspectRatio: 1,
         backgroundColor: '#1a1a1a',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
-
-    info: {
+    image: {
+        width: '100%',
+        height: '100%',
+    },
+    cardInfo: {
         padding: 10,
+        gap: 6,
     },
-
-    nombre: {
-        color: '#fff',
+    cardNombre: {
         fontSize: 14,
         fontWeight: '600',
-        marginBottom: 6,
+        color: '#fff',
+        lineHeight: 18,
     },
-
-    tags: {
+    cardTags: {
         flexDirection: 'row',
         alignItems: 'center',
         flexWrap: 'wrap',
+        gap: 6,
     },
-
     tag: {
         borderWidth: 1,
-        borderRadius: 999,
-        paddingHorizontal: 8,
-        paddingVertical: 3,
-        marginRight: 6,
+        borderRadius: 100,
+        paddingHorizontal: 7,
+        paddingVertical: 2,
+        backgroundColor: 'rgba(255, 255, 255, 0.03)',
     },
-
     tagText: {
         fontSize: 10,
         fontWeight: '700',
         textTransform: 'uppercase',
     },
-
-    tipo: {
-        color: '#999',
+    tagTipo: {
         fontSize: 11,
+        color: '#888', // var(--text-dim)
         fontStyle: 'italic',
     },
-
-    empty: {
-        color: '#777',
-        textAlign: 'center',
-        marginTop: 50,
+    estadoContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 40,
     },
-
-    error: {
-        color: '#ef5350',
+    estadoTexto: {
+        color: '#888',
+        fontStyle: 'italic',
+        fontSize: 15,
         textAlign: 'center',
-        marginTop: 50,
+    },
+    spinnerTexto: {
+        color: '#4ecdc4',
+        marginTop: 10,
+        fontSize: 14,
+    },
+    errorTexto: {
+        color: '#ef5350',
     },
 });
