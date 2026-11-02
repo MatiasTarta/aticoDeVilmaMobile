@@ -1,13 +1,17 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();
 
+app.use(cors());
 app.use(express.json()); // parsea el json del body
-
-app.use(express.static('public')); // sirve los archivos estáticos vistas, css, js
 
 //me traigo los datos de la ddbbn't
 const dbnt = require('./DDBBnt/instrumentos.js');
-const instrumentos = dbnt.instrumentos;
+const { esFuncional } = require('./funcional');
+const instrumentos = dbnt.instrumentos.map((instrumento) => ({
+  ...instrumento,
+  funcional: esFuncional(instrumento),
+}));
 let idCounter = dbnt.nextId;
 
 
@@ -24,10 +28,14 @@ app.get('/api/instrumentos', (req, res) => {
     });
   }
 
-  const resultado = instrumentos.slice(from, from + cantidad);
+  const visibles = req.query.incluirEnDesarrollo === '1'
+    ? instrumentos
+    : instrumentos.filter((instrumento) => instrumento.funcional);
+
+  const resultado = visibles.slice(from, from + cantidad);
 
   res.json({
-    total: instrumentos.length,
+    total: visibles.length,
     cantidad: resultado.length,
     from: from,
     datos: resultado
@@ -46,8 +54,8 @@ app.get('/api/instrumentos/:id', (req, res) => {
     });
   }
 
-  // busco instrumento
-  const instrumento = instrumentos.find(inst => inst.id === id);
+  // busco instrumento funcional
+  const instrumento = instrumentos.find(inst => inst.id === id && inst.funcional);
 
   // Si no existe -> 404
   if (!instrumento) {
@@ -109,6 +117,7 @@ app.post('/api/instrumentos', (req, res) => {
   }
 
   // creo nuevo instrumento
+  const linkFinal = link || '';
   const nuevoInstrumento = {
     id: idCounter++,
     nombre: nombre.trim(),
@@ -116,8 +125,9 @@ app.post('/api/instrumentos', (req, res) => {
     escala: escala || 'ninguna',
     categoria: categoria.trim(),
     imagen: imagen || '../assets/img/placeholder.png',
-    link: link || './enDesarrollo.html',
-    carpetaSonidos: carpetaSonidos || ''
+    link: linkFinal,
+    carpetaSonidos: carpetaSonidos || '',
+    funcional: esFuncional({ link: linkFinal })
   };
 
   // guardo en la ddbbn't
@@ -147,7 +157,7 @@ app.put('/api/instrumentos/:id', (req, res) => {
   }
 
   // Datos a actualizar
-  const { nombre, tipoSonido, escala, categoria } = req.body;
+  const { nombre, tipoSonido, escala, categoria, link } = req.body;
 
   // VALIDACIONES
   const errores = [];
@@ -168,6 +178,10 @@ app.put('/api/instrumentos/:id', (req, res) => {
     errores.push("El campo 'escala' debe ser texto");
   }
 
+  if (link !== undefined && typeof link !== 'string') {
+    errores.push("El campo 'link' debe ser texto");
+  }
+
   if (errores.length > 0) {
     return res.status(400).json({
       error: "Datos inválidos",
@@ -180,6 +194,9 @@ app.put('/api/instrumentos/:id', (req, res) => {
   if (tipoSonido !== undefined) instrumentos[index].tipoSonido = tipoSonido;
   if (escala !== undefined) instrumentos[index].escala = escala;
   if (categoria !== undefined) instrumentos[index].categoria = categoria;
+  if (link !== undefined) instrumentos[index].link = link;
+
+  instrumentos[index].funcional = esFuncional(instrumentos[index]);
 
   // Devolver instrumento actualizado
   res.json(instrumentos[index]);
