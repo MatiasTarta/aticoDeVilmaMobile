@@ -7,11 +7,14 @@ export const GRID_GAP = 12;
 
 export function useResponsive() {
   const { width, height } = useWindowDimensions();
-  const columns = width >= BREAKPOINTS.desktop ? 4 : width >= BREAKPOINTS.tablet ? 3 : 2;
-  const contentWidth = Math.min(width, MAX_CONTENT_WIDTH) - GRID_PADDING * 2;
+  // En SSR y en el primer render web, width puede ser 0.
+  // Usamos un ancho de referencia para que el contenido no desaparezca.
+  const effectiveWidth = width > 0 ? width : 375;
+  const columns = effectiveWidth >= BREAKPOINTS.desktop ? 4 : effectiveWidth >= BREAKPOINTS.tablet ? 3 : 2;
+  const contentWidth = Math.min(effectiveWidth, MAX_CONTENT_WIDTH) - GRID_PADDING * 2;
   const cardWidth = Math.max(0, (contentWidth - GRID_GAP * (columns - 1)) / columns);
-  const titleFontSize = Math.min(width * 0.18, 72);
+  const titleFontSize = Math.min(effectiveWidth * 0.18, 72);
   const isWeb = Platform.OS === 'web';
 
-  return { width, height, columns, cardWidth, titleFontSize, isWeb };
+  return { width: effectiveWidth, height, columns, cardWidth, titleFontSize, isWeb };
 }
