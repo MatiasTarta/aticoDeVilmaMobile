@@ -1,7 +1,7 @@
 # Refactor de componentes compartidos — El Ático de Vilma Mobile
 
 **Fecha:** 2026-11-02
-**Estado:** pendiente de aprobación
+**Estado:** aprobado
 **Rama:** `master`
 
 ## 1. Intento y por qué
