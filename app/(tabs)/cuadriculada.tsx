@@ -123,7 +123,7 @@ export default function Cuadriculada() {
 
                 <Text style={styles.titulo}>Instrumentos</Text>
 
-                <Pressable style={styles.crearButton} onPress={() => router.push('/crear')}>
+                <Pressable style={styles.crearButton} onPress={() => router.push('/crear' as any)}>
                     <Text style={styles.crearButtonText}>＋</Text>
                 </Pressable>
             </View>
