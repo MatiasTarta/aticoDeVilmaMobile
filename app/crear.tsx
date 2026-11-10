@@ -115,9 +115,17 @@ export default function Crear() {
                 autoCorrect={false}
                 maxLength={80}
                 testID="crear-nombre"
+                accessibilityLabel={
+                  errores.nombre ? `Nombre (obligatorio). ${errores.nombre}` : 'Nombre (obligatorio)'
+                }
+                aria-describedby={errores.nombre ? 'crear-nombre-error' : undefined}
               />
               {errores.nombre ? (
-                <Text style={styles.error} accessibilityLiveRegion="polite">
+                <Text
+                  nativeID="crear-nombre-error"
+                  style={styles.error}
+                  accessibilityLiveRegion="polite"
+                >
                   {errores.nombre}
                 </Text>
               ) : null}
@@ -140,9 +148,19 @@ export default function Crear() {
                 autoCorrect={false}
                 maxLength={40}
                 testID="crear-tipoSonido"
+                accessibilityLabel={
+                  errores.tipoSonido
+                    ? `Tipo de sonido (obligatorio). ${errores.tipoSonido}`
+                    : 'Tipo de sonido (obligatorio)'
+                }
+                aria-describedby={errores.tipoSonido ? 'crear-tipoSonido-error' : undefined}
               />
               {errores.tipoSonido ? (
-                <Text style={styles.error} accessibilityLiveRegion="polite">
+                <Text
+                  nativeID="crear-tipoSonido-error"
+                  style={styles.error}
+                  accessibilityLiveRegion="polite"
+                >
                   {errores.tipoSonido}
                 </Text>
               ) : null}
@@ -150,7 +168,12 @@ export default function Crear() {
 
             <View style={styles.field}>
               <Text style={styles.label}>Categoría *</Text>
-              <View style={styles.chips}>
+              <View
+                style={styles.chips}
+                accessibilityRole="radiogroup"
+                accessibilityLabel="Categoría (obligatoria)"
+                aria-describedby={errores.categoria ? 'crear-categoria-error' : undefined}
+              >
                 {CATEGORIAS.map(({ valor, etiqueta }) => {
                   const activo = categoria === valor;
                   return (
@@ -180,7 +203,11 @@ export default function Crear() {
                 })}
               </View>
               {errores.categoria ? (
-                <Text style={styles.error} accessibilityLiveRegion="polite">
+                <Text
+                  nativeID="crear-categoria-error"
+                  style={styles.error}
+                  accessibilityLiveRegion="polite"
+                >
                   {errores.categoria}
                 </Text>
               ) : null}
@@ -198,6 +225,7 @@ export default function Crear() {
                 autoCorrect={false}
                 maxLength={40}
                 testID="crear-escala"
+                accessibilityLabel="Escala (opcional)"
               />
             </View>
 
