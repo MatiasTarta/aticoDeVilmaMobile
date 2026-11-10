@@ -1,8 +1,6 @@
-import {
-  Fraunces_400Regular,
-  Fraunces_400Regular_Italic,
-  Fraunces_600SemiBold,
-} from '@expo-google-fonts/fraunces'
+import { Fraunces_400Regular } from '@expo-google-fonts/fraunces/400Regular'
+import { Fraunces_400Regular_Italic } from '@expo-google-fonts/fraunces/400Regular_Italic'
+import { Fraunces_600SemiBold } from '@expo-google-fonts/fraunces/600SemiBold'
 import { useFonts } from 'expo-font'
 import { Stack } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'

@@ -1,10 +1,10 @@
 import type { ImageSourcePropType } from 'react-native';
 
 const IMAGENES_LOCALES: Record<string, ImageSourcePropType> = {
-  'piano.png': require('../../assets/images/piano.png'),
-  'bateria.png': require('../../assets/images/bateria.png'),
-  'pianoPsicodelico.png': require('../../assets/images/pianoPsicodelico.png'),
-  'placeholder.png': require('../../assets/images/placeholder.png'),
+  'piano.png': require('../../assets/images/piano.jpg'),
+  'bateria.png': require('../../assets/images/bateria.jpg'),
+  'pianoPsicodelico.png': require('../../assets/images/pianoPsicodelico.jpg'),
+  'placeholder.png': require('../../assets/images/placeholder.jpg'),
 };
 
 export function resolveImagen(imagen: string): ImageSourcePropType {
