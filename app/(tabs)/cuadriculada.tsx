@@ -1,15 +1,20 @@
 import { router } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
-import { FlatList, Platform, StyleSheet } from 'react-native';
+import { FlatList, Platform, StyleSheet, Text, View } from 'react-native';
 
 import { InstrumentoCard } from '@/components/instrumentos/InstrumentoCard';
 import { Button } from '@/components/ui/Button';
 import { Screen } from '@/components/ui/Screen';
 import { ScreenHeader } from '@/components/ui/ScreenHeader';
 import { StateView } from '@/components/ui/StateView';
+import { colors, fonts, spacing } from '@/constants/theme';
 import { GRID_GAP, GRID_PADDING, useResponsive } from '@/hooks/useResponsive';
 import { getInstrumentos } from '@/services/instrumentos';
 import type { Instrumento } from '@/types/instrumento';
+
+function summaryLabel(total: number): string {
+  return total === 1 ? '1 pieza' : `${total} piezas`;
+}
 
 export default function Cuadriculada() {
   const [instrumentos, setInstrumentos] = useState<Instrumento[]>([]);
@@ -38,8 +43,13 @@ export default function Cuadriculada() {
   }, []);
 
   const renderItem = useCallback(
-    ({ item }: { item: Instrumento }) => (
-      <InstrumentoCard instrumento={item} onPress={handlePress} width={cardWidth} />
+    ({ item, index }: { item: Instrumento; index: number }) => (
+      <InstrumentoCard
+        instrumento={item}
+        onPress={handlePress}
+        width={cardWidth}
+        index={index}
+      />
     ),
     [handlePress, cardWidth],
   );
@@ -64,7 +74,11 @@ export default function Cuadriculada() {
       }
     >
       {error ? (
-        <StateView variant="error" message={error} />
+        <StateView
+          variant="error"
+          message={error}
+          action={{ label: 'Reintentar', onPress: cargarInstrumentos }}
+        />
       ) : cargando && instrumentos.length === 0 ? (
         <StateView variant="loading" />
       ) : (
@@ -77,6 +91,14 @@ export default function Cuadriculada() {
           keyExtractor={keyExtractor}
           contentContainerStyle={styles.listContainer}
           columnWrapperStyle={styles.gridRow}
+          ListHeaderComponent={
+            instrumentos.length > 0 ? (
+              <View style={styles.summary}>
+                <Text style={styles.summaryText}>{summaryLabel(instrumentos.length)}</Text>
+                <View style={styles.summaryRule} />
+              </View>
+            ) : null
+          }
           ListEmptyComponent={<StateView variant="empty" />}
           removeClippedSubviews={Platform.OS !== 'web'}
           initialNumToRender={6}
@@ -90,9 +112,31 @@ export default function Cuadriculada() {
 
 const styles = StyleSheet.create({
   listContainer: {
+    flexGrow: 1,
     padding: GRID_PADDING,
+    paddingBottom: spacing.xxl,
   },
   gridRow: {
     gap: GRID_GAP,
+  },
+  summary: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.md,
+    marginBottom: spacing.lg,
+    paddingHorizontal: 2,
+  },
+  summaryText: {
+    color: colors.textMuted,
+    fontFamily: fonts.mono,
+    fontSize: 9.5,
+    lineHeight: 13,
+    letterSpacing: 1.8,
+    textTransform: 'uppercase',
+  },
+  summaryRule: {
+    flex: 1,
+    height: 1,
+    backgroundColor: colors.border,
   },
 });

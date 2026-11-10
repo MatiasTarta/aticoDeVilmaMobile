@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import { StyleSheet, Text, View, type StyleProp, type ViewStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { colors, spacing, typography } from '@/constants/theme';
+import { colors, fonts, spacing } from '@/constants/theme';
 import { MAX_CONTENT_WIDTH } from '@/hooks/useResponsive';
 
 import { Button } from './Button';
@@ -33,7 +33,7 @@ export function ScreenHeader({
           ) : null}
         </View>
 
-        <Text style={styles.title} numberOfLines={1}>
+        <Text style={styles.title} numberOfLines={1} accessibilityRole="header">
           {title}
         </Text>
 
@@ -48,12 +48,15 @@ const styles = StyleSheet.create({
     backgroundColor: colors.surface,
     borderBottomWidth: 1,
     borderColor: colors.border,
-    paddingBottom: spacing.md,
+    borderTopWidth: 2,
+    borderTopColor: colors.amberSoft,
+    paddingBottom: spacing.sm + 2,
     paddingHorizontal: spacing.lg,
   },
   row: {
     width: '100%',
     maxWidth: MAX_CONTENT_WIDTH,
+    minHeight: 42,
     alignSelf: 'center',
     flexDirection: 'row',
     alignItems: 'center',
@@ -69,9 +72,12 @@ const styles = StyleSheet.create({
   },
   title: {
     flex: 1,
-    color: colors.text,
-    fontSize: typography.title,
-    fontWeight: '400',
+    color: colors.cream,
+    fontFamily: fonts.mono,
+    fontSize: 13,
+    letterSpacing: 3,
+    lineHeight: 18,
     textAlign: 'center',
+    textTransform: 'uppercase',
   },
 });

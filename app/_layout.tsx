@@ -1,14 +1,25 @@
+import {
+  Fraunces_400Regular,
+  Fraunces_400Regular_Italic,
+  Fraunces_600SemiBold,
+} from '@expo-google-fonts/fraunces'
 import { useFonts } from 'expo-font'
 import { Stack } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
+import { StatusBar } from 'expo-status-bar'
 import { useEffect } from 'react'
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context'
+
+import { colors } from '@/constants/theme'
 
 SplashScreen.preventAutoHideAsync()
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    Fraunces_400Regular,
+    Fraunces_400Regular_Italic,
+    Fraunces_600SemiBold,
   })
 
   useEffect(() => { if (error) throw error }, [error])
@@ -18,7 +29,8 @@ export default function RootLayout() {
 
   return (
     <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-      <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: '#0a0a0a' } }}>
+      <StatusBar style="light" />
+      <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.bg } }}>
         <Stack.Screen name="(tabs)" />
       </Stack>
     </SafeAreaProvider>
