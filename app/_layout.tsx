@@ -8,16 +8,16 @@ import { StatusBar } from 'expo-status-bar'
 import { useEffect } from 'react'
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context'
 
-import { colors } from '@/constants/theme'
+import { colors, fonts } from '@/constants/theme'
 
 SplashScreen.preventAutoHideAsync()
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-    Fraunces_400Regular,
-    Fraunces_400Regular_Italic,
-    Fraunces_600SemiBold,
+    [fonts.mono]: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    [fonts.displayRegular]: Fraunces_400Regular,
+    [fonts.displayItalic]: Fraunces_400Regular_Italic,
+    [fonts.display]: Fraunces_600SemiBold,
   })
 
   useEffect(() => { if (error) throw error }, [error])

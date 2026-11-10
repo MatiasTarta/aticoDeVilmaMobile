@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import {
+  getCategoriaColor,
   resolveImagen,
   serial,
   tipoSonidoLegible,
@@ -12,7 +13,7 @@ import { Screen } from '@/components/ui/Screen';
 import { ScreenHeader } from '@/components/ui/ScreenHeader';
 import { StateView } from '@/components/ui/StateView';
 import { Tag } from '@/components/ui/Tag';
-import { colors, fonts, getCategoriaColor, radii, spacing } from '@/constants/theme';
+import { colors, fonts, radii, spacing } from '@/constants/theme';
 import { useVolver } from '@/hooks/useVolver';
 import { getInstrumento } from '@/services/instrumentos';
 import type { Instrumento } from '@/types/instrumento';

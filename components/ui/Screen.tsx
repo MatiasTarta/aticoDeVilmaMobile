@@ -1,9 +1,8 @@
 import type { ReactNode } from 'react';
 import { StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 
+import { MAX_CONTENT_WIDTH } from '@/constants/layout';
 import { colors } from '@/constants/theme';
-
-const DEFAULT_MAX_WIDTH = 1100;
 
 interface ScreenProps {
   children: ReactNode;
@@ -21,7 +20,7 @@ export function Screen({
   backdrop,
   style,
   contentStyle,
-  maxWidth = DEFAULT_MAX_WIDTH,
+  maxWidth = MAX_CONTENT_WIDTH,
 }: ScreenProps) {
   return (
     <View style={[styles.root, style]}>

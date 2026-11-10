@@ -10,12 +10,12 @@ import {
 } from 'react-native';
 
 import { Tag } from '@/components/ui/Tag';
-import { colors, fonts, getCategoriaColor, radii, spacing } from '@/constants/theme';
-import { GRID_GAP } from '@/hooks/useResponsive';
+import { GRID_GAP } from '@/constants/layout';
+import { colors, fonts, radii, spacing } from '@/constants/theme';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import type { Instrumento } from '@/types/instrumento';
 
-import { resolveImagen, serial, tipoSonidoLegible } from './presentacion';
+import { getCategoriaColor, resolveImagen, serial, tipoSonidoLegible } from './presentacion';
 
 interface InstrumentoCardProps {
   instrumento: Instrumento;

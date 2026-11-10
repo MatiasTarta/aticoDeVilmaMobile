@@ -3,8 +3,9 @@ import Constants from 'expo-constants';
 import type { ApiResponse, Instrumento, NuevoInstrumento } from '@/types/instrumento';
 
 const API_PORT = 3000;
+const ERROR_CONEXION = 'No se pudo conectar al servidor.';
 
-export function resolveApiBaseUrl(): string {
+function resolveApiBaseUrl(): string {
   const envUrl = process.env.EXPO_PUBLIC_API_URL;
   if (envUrl) {
     return envUrl.replace(/\/$/, '');
@@ -21,15 +22,21 @@ export function resolveApiBaseUrl(): string {
   return `http://localhost:${API_PORT}`;
 }
 
-export const API_BASE_URL = resolveApiBaseUrl();
+const API_BASE_URL = resolveApiBaseUrl();
+
+async function pedir(ruta: string, init?: RequestInit): Promise<Response> {
+  try {
+    return await fetch(`${API_BASE_URL}${ruta}`, init);
+  } catch {
+    throw new Error(ERROR_CONEXION);
+  }
+}
 
 export async function getInstrumentos(): Promise<Instrumento[]> {
-  const res = await fetch(
-    `${API_BASE_URL}/api/instrumentos?cantidad=50&from=0&incluirEnDesarrollo=1`,
-  );
+  const res = await pedir('/api/instrumentos?cantidad=50&from=0&incluirEnDesarrollo=1');
 
   if (!res.ok) {
-    throw new Error('No se pudo conectar al servidor.');
+    throw new Error('No se pudo cargar el catálogo.');
   }
 
   const data = (await res.json()) as ApiResponse;
@@ -37,12 +44,7 @@ export async function getInstrumentos(): Promise<Instrumento[]> {
 }
 
 export async function getInstrumento(id: number): Promise<Instrumento | null> {
-  let res: Response;
-  try {
-    res = await fetch(`${API_BASE_URL}/api/instrumentos/${id}`);
-  } catch {
-    throw new Error('No se pudo conectar al servidor.');
-  }
+  const res = await pedir(`/api/instrumentos/${id}`);
 
   if (res.status === 404) {
     return null;
@@ -56,16 +58,11 @@ export async function getInstrumento(id: number): Promise<Instrumento | null> {
 }
 
 export async function crearInstrumento(datos: NuevoInstrumento): Promise<Instrumento> {
-  let res: Response;
-  try {
-    res = await fetch(`${API_BASE_URL}/api/instrumentos`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(datos),
-    });
-  } catch {
-    throw new Error('No se pudo conectar al servidor.');
-  }
+  const res = await pedir('/api/instrumentos', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(datos),
+  });
 
   if (res.status === 201) {
     return (await res.json()) as Instrumento;

@@ -13,12 +13,15 @@ interface MediaQueryListLike {
   ) => void;
 }
 
+const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
+
+function getMatchMedia() {
+  return (globalThis as { matchMedia?: (query: string) => MediaQueryListLike }).matchMedia;
+}
+
 function initialPreference(): boolean {
   if (Platform.OS !== 'web') return false;
-  const matchMedia = (globalThis as { matchMedia?: (query: string) => MediaQueryListLike })
-    .matchMedia;
-  if (!matchMedia) return false;
-  return matchMedia('(prefers-reduced-motion: reduce)').matches;
+  return getMatchMedia()?.(REDUCED_MOTION_QUERY).matches ?? false;
 }
 
 /** Respeta `prefers-reduced-motion` en web y el ajuste del sistema en nativo. */
@@ -27,11 +30,10 @@ export function useReducedMotion(): boolean {
 
   useEffect(() => {
     if (Platform.OS === 'web') {
-      const matchMedia = (globalThis as { matchMedia?: (query: string) => MediaQueryListLike })
-        .matchMedia;
+      const matchMedia = getMatchMedia();
       if (!matchMedia) return;
 
-      const query = matchMedia('(prefers-reduced-motion: reduce)');
+      const query = matchMedia(REDUCED_MOTION_QUERY);
       const handleChange = (event: { matches: boolean }) => setReduced(event.matches);
       query.addEventListener?.('change', handleChange);
       return () => query.removeEventListener?.('change', handleChange);

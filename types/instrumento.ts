@@ -5,7 +5,7 @@ export interface Instrumento {
   nombre: string;
   tipoSonido: string;
   escala: string;
-  categoria: Categoria | string;
+  categoria: Categoria;
   imagen: string;
   link: string;
   carpetaSonidos: string;

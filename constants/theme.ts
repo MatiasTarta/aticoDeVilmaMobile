@@ -31,18 +31,6 @@ export const colors = {
   imageBg: '#171310',
 } as const;
 
-/**
- * Tintas de sello: las versiones vivas de categoría no se leen sobre papel,
- * así que cada categoría tiene su tinta oscura para estampar la ficha.
- */
-export const categoriaColors: Record<string, string> = {
-  teclado: '#2f6f6b',
-  percusion: '#8a5a12',
-  cuerda: '#8c2f2f',
-  viento: '#6a3d75',
-  electronico: '#2b5f8a',
-};
-
 export const spacing = { xs: 4, sm: 8, md: 12, lg: 16, xl: 24, xxl: 32, xxxl: 48 } as const;
 
 export const radii = { xs: 2, sm: 4, md: 6, lg: 10, pill: 100 } as const;
@@ -54,25 +42,3 @@ export const fonts = {
   displayItalic: 'Fraunces_400Regular_Italic',
   mono: 'SpaceMono',
 } as const;
-
-/** Escala 1.25 desde 15 px: 11 · 14 · 17 · 21 · 26 · 33. */
-export const typography = {
-  micro: 10,
-  eyebrow: 11,
-  caption: 11,
-  body: 15,
-  bodyLg: 17,
-  subtitle: 18,
-  h3: 21,
-  h2: 26,
-  h1: 33,
-  title: 24,
-} as const;
-
-export function getCategoriaColor(categoria: string): string {
-  const key = categoria
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toLowerCase();
-  return categoriaColors[key] ?? colors.inkMuted;
-}
