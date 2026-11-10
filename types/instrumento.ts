@@ -12,6 +12,16 @@ export interface Instrumento {
   funcional?: boolean;
 }
 
+export interface NuevoInstrumento {
+  nombre: string;
+  tipoSonido: string;
+  categoria: Categoria;
+  escala?: string;
+  imagen?: string;
+  link?: string;
+  carpetaSonidos?: string;
+}
+
 export interface ApiResponse {
   total: number;
   cantidad: number;

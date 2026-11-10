@@ -7,7 +7,6 @@ import {
   StyleSheet,
   Text,
   View,
-  type ImageSourcePropType,
 } from 'react-native';
 
 import { Tag } from '@/components/ui/Tag';
@@ -16,36 +15,7 @@ import { GRID_GAP } from '@/hooks/useResponsive';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import type { Instrumento } from '@/types/instrumento';
 
-const IMAGENES_LOCALES: Record<string, ImageSourcePropType> = {
-  'piano.png': require('../../assets/images/piano.png'),
-  'bateria.png': require('../../assets/images/bateria.png'),
-  'pianoPsicodelico.png': require('../../assets/images/pianoPsicodelico.png'),
-  'placeholder.png': require('../../assets/images/placeholder.png'),
-};
-
-function resolveImagen(imagen: string): ImageSourcePropType {
-  const archivo = imagen.split('/').pop() ?? '';
-  return IMAGENES_LOCALES[archivo] ?? IMAGENES_LOCALES['placeholder.png'];
-}
-
-function serial(id: number): string {
-  return `N.º ${String(id).padStart(3, '0')}`;
-}
-
-const TIPOS_ACENTUADOS: Record<string, string> = {
-  acustico: 'acústico',
-  psicodelico: 'psicodélico',
-  electronico: 'electrónico',
-  percusion: 'percusión',
-};
-
-function tipoSonidoLegible(tipo: string): string {
-  const key = tipo
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toLowerCase();
-  return TIPOS_ACENTUADOS[key] ?? tipo;
-}
+import { resolveImagen, serial, tipoSonidoLegible } from './presentacion';
 
 interface InstrumentoCardProps {
   instrumento: Instrumento;
