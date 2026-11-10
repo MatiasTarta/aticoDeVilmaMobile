@@ -1,5 +1,5 @@
-import { router } from 'expo-router';
-import { useCallback, useEffect, useState } from 'react';
+import { router, useFocusEffect } from 'expo-router';
+import { useCallback, useState } from 'react';
 import { FlatList, Platform, StyleSheet, Text, View } from 'react-native';
 
 import { InstrumentoCard } from '@/components/instrumentos/InstrumentoCard';
@@ -34,9 +34,11 @@ export default function Cuadriculada() {
     }
   }, []);
 
-  useEffect(() => {
-    cargarInstrumentos();
-  }, [cargarInstrumentos]);
+  useFocusEffect(
+    useCallback(() => {
+      cargarInstrumentos();
+    }, [cargarInstrumentos]),
+  );
 
   const handlePress = useCallback((id: number) => {
     router.push(`/instrumento/${id}` as any);
@@ -99,7 +101,12 @@ export default function Cuadriculada() {
               </View>
             ) : null
           }
-          ListEmptyComponent={<StateView variant="empty" />}
+          ListEmptyComponent={
+            <StateView
+              variant="empty"
+              action={{ label: 'Crear ficha', onPress: () => router.push('/crear') }}
+            />
+          }
           removeClippedSubviews={Platform.OS !== 'web'}
           initialNumToRender={6}
           maxToRenderPerBatch={8}

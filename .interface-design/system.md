@@ -96,6 +96,24 @@ apenas redondeados.
 - Hover: fondo `#f5eddf` y borde ámbar. Press: `scale(0.985)`.
 - Entrada: fade + 10 px, 340 ms, escalón de 45 ms (máximo 8 fichas).
 
+### Ficha de detalle (`/instrumento/[id]`)
+
+- Ficha de papel de 560 px máximo, borde `paperEdge`, radio 2, padding 20.
+- Fila superior: serial `N.º 001` en mono 9 y sello de categoría a la derecha.
+- Imagen 4:3 con `resizeMode="cover"` y placeholder si el archivo no existe.
+- Nombre Fraunces 600 26/31; regla hairline y metadatos en filas
+  etiqueta mono 9 / valor alineado a la derecha.
+- Acción “Volver al catálogo” con botón **ink**.
+- Sin imagen, sin link y sin carpeta de sonidos: la ficha no expone datos técnicos.
+
+### Alta (`/crear`)
+
+- Ficha de papel de 560 px máximo, padding 20, misma jerarquía editorial.
+- Campos con etiqueta mono 9 en mayúscula y tracking 1.4.
+- Categoría con chips de 44 px de alto: borde `paperEdge`; activo tinta sobre papel.
+- Errores inline en `dangerInk`; error de servidor en banner con borde `dangerInk`.
+- Acción principal **primary** (“Guardar ficha”); al guardar navega a la ficha nueva.
+
 ### Sello de categoría (`Tag`)
 
 Mono 9, tracking 1.2, borde 1.5, radio 2, rotación `-2deg`. Nunca usar la versión
@@ -121,7 +139,7 @@ viva del color de categoría sobre papel: no contrasta.
 - Ficha de papel de 420 px máximo, centrada, con serial `N.º —`, sello, regla y mensaje.
 - Mensajes por defecto: “No se pudo conectar al servidor.” / “No hay instrumentos.”
 - Error: sello `dangerInk` “ERROR DE CONEXIÓN”, ayuda y botón “Reintentar”.
-- Vacío: sello “CATÁLOGO VACÍO”, sin acción (la creación está fuera de alcance).
+- Vacío: sello “CATÁLOGO VACÍO” y acción “Crear ficha”.
 - Loading: spinner ámbar + mono 10 con tracking 2.
 - El vacío se centra con `flexGrow: 1` en el contenido de la `FlatList`.
 
@@ -153,11 +171,6 @@ Ficha de 440 px máximo: serial `N.º —`, sello “EXTRAVIADA”, marco puntea
 - El fondo decorativo queda fuera del árbol accesible.
 - Contraste: tinta sobre papel y crema sobre penumbra; el ámbar se usa como acción,
   no como texto pequeño sobre papel.
-
-## Fuera de alcance
-
-`/crear` y `/instrumento/[id]` no se implementan por pedido explícito; las tarjetas y
-el “+” siguen navegando al 404.
 
 ## Verificación
 
