@@ -22,6 +22,7 @@ interface StateViewProps {
   variant: StateVariant;
   message?: string;
   action?: StateAction;
+  stampLabel?: string;
   style?: StyleProp<ViewStyle>;
 }
 
@@ -31,7 +32,7 @@ const DEFAULT_MESSAGES: Record<StateVariant, string> = {
   empty: 'No hay instrumentos.',
 };
 
-export function StateView({ variant, message, action, style }: StateViewProps) {
+export function StateView({ variant, message, action, stampLabel, style }: StateViewProps) {
   if (variant === 'loading') {
     return (
       <View style={[styles.container, style]}>
@@ -51,7 +52,7 @@ export function StateView({ variant, message, action, style }: StateViewProps) {
           <Text style={styles.serial}>N.º —</Text>
           <View style={[styles.stamp, { borderColor: stampColor }]}>
             <Text style={[styles.stampText, { color: stampColor }]}>
-              {isError ? 'Error de conexión' : 'Catálogo vacío'}
+              {stampLabel ?? (isError ? 'Error de conexión' : 'Catálogo vacío')}
             </Text>
           </View>
         </View>
