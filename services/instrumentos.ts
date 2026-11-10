@@ -37,7 +37,12 @@ export async function getInstrumentos(): Promise<Instrumento[]> {
 }
 
 export async function getInstrumento(id: number): Promise<Instrumento | null> {
-  const res = await fetch(`${API_BASE_URL}/api/instrumentos/${id}`);
+  let res: Response;
+  try {
+    res = await fetch(`${API_BASE_URL}/api/instrumentos/${id}`);
+  } catch {
+    throw new Error('No se pudo conectar al servidor.');
+  }
 
   if (res.status === 404) {
     return null;
@@ -51,11 +56,16 @@ export async function getInstrumento(id: number): Promise<Instrumento | null> {
 }
 
 export async function crearInstrumento(datos: NuevoInstrumento): Promise<Instrumento> {
-  const res = await fetch(`${API_BASE_URL}/api/instrumentos`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(datos),
-  });
+  let res: Response;
+  try {
+    res = await fetch(`${API_BASE_URL}/api/instrumentos`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(datos),
+    });
+  } catch {
+    throw new Error('No se pudo conectar al servidor.');
+  }
 
   if (res.status === 201) {
     return (await res.json()) as Instrumento;

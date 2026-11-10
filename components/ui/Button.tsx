@@ -11,6 +11,7 @@ interface ButtonProps {
   variant?: ButtonVariant;
   disabled?: boolean;
   accessibilityLabel?: string;
+  testID?: string;
   style?: StyleProp<ViewStyle>;
 }
 
@@ -20,6 +21,7 @@ export function Button({
   variant = 'primary',
   disabled = false,
   accessibilityLabel,
+  testID,
   style,
 }: ButtonProps) {
   const [hovered, setHovered] = useState(false);
@@ -28,6 +30,7 @@ export function Button({
     <Pressable
       onPress={onPress}
       disabled={disabled}
+      testID={testID}
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel ?? label}
       accessibilityState={{ disabled }}
