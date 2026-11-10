@@ -15,7 +15,7 @@ import { Button } from '@/components/ui/Button';
 import { Screen } from '@/components/ui/Screen';
 import { ScreenHeader } from '@/components/ui/ScreenHeader';
 import { colors, fonts, radii, spacing } from '@/constants/theme';
-import { useVolverAlCatalogo } from '@/hooks/useVolverAlCatalogo';
+import { useVolver } from '@/hooks/useVolver';
 import { crearInstrumento } from '@/services/instrumentos';
 import type { Categoria } from '@/types/instrumento';
 
@@ -35,7 +35,7 @@ interface Errores {
 
 export default function Crear() {
   const router = useRouter();
-  const volver = useVolverAlCatalogo();
+  const volver = useVolver('/cuadriculada');
 
   const [nombre, setNombre] = useState('');
   const [tipoSonido, setTipoSonido] = useState('');

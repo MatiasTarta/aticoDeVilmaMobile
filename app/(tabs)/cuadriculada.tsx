@@ -9,6 +9,7 @@ import { ScreenHeader } from '@/components/ui/ScreenHeader';
 import { StateView } from '@/components/ui/StateView';
 import { colors, fonts, spacing } from '@/constants/theme';
 import { GRID_GAP, GRID_PADDING, useResponsive } from '@/hooks/useResponsive';
+import { useVolver } from '@/hooks/useVolver';
 import { getInstrumentos } from '@/services/instrumentos';
 import type { Instrumento } from '@/types/instrumento';
 
@@ -21,6 +22,7 @@ export default function Cuadriculada() {
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState('');
   const { columns, cardWidth } = useResponsive();
+  const volver = useVolver('/');
 
   const cargarInstrumentos = useCallback(async () => {
     setCargando(true);
@@ -63,7 +65,7 @@ export default function Cuadriculada() {
       header={
         <ScreenHeader
           title="Instrumentos"
-          onBack={() => router.back()}
+          onBack={volver}
           rightAction={
             <Button
               variant="icon"

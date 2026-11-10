@@ -13,13 +13,13 @@ import { ScreenHeader } from '@/components/ui/ScreenHeader';
 import { StateView } from '@/components/ui/StateView';
 import { Tag } from '@/components/ui/Tag';
 import { colors, fonts, getCategoriaColor, radii, spacing } from '@/constants/theme';
-import { useVolverAlCatalogo } from '@/hooks/useVolverAlCatalogo';
+import { useVolver } from '@/hooks/useVolver';
 import { getInstrumento } from '@/services/instrumentos';
 import type { Instrumento } from '@/types/instrumento';
 
 export default function InstrumentoDetalle() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const volver = useVolverAlCatalogo();
+  const volver = useVolver('/cuadriculada');
   const [instrumento, setInstrumento] = useState<Instrumento | null>(null);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState('');
