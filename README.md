@@ -188,11 +188,39 @@ cd app && npm run typecheck   # TypeScript
 cd app && npx expo export --platform web   # build web
 ```
 
+## Solución de problemas
+
+### `Unable to resolve module ./standard-navigation`
+
+Aparece cuando Metro quedó corriendo mientras se actualizaban las dependencias. La instalación queda a medias y el bundle no resuelve un módulo interno de `expo-router`.
+
+```bash
+cd app
+pkill -f "expo start" || true
+npm ci
+npx expo start -c
+```
+
+No ejecutes `npm install` con Metro encendido.
+
+### Expo Go queda en una pantalla blanca o con la flecha de recarga
+
+1. Cerrá Expo Go por completo y volvé a abrir el proyecto.
+2. Verificá que el teléfono y la computadora estén en la misma red WiFi.
+3. Si la red aísla a los dispositivos, usá un túnel:
+
+```bash
+cd app
+npx expo start --tunnel -c
+```
+
+4. Revisá la terminal de Metro: tiene que aparecer `Android Bundled` y las trazas `[arranque]`.
+
 ## Notas
 
 - Las imágenes locales se optimizaron a JPEG de hasta 1000 px. Si una ficha no tiene imagen, se usa `placeholder.jpg`.
 - `+html.tsx` configura el documento HTML de la versión web (`lang="es"` y fondo oscuro) y `+not-found.tsx` muestra la pantalla de rutas inexistentes.
-- Las fuentes se cargan una sola vez en `app/src/app/_layout.tsx` y sus nombres salen de los tokens de `theme.ts`.
+- Las fuentes se cargan en segundo plano en `app/src/app/_layout.tsx` y sus nombres salen de los tokens de `theme.ts`. Nunca bloquean el arranque: si fallan, se usan las del sistema.
 
 ## Licencia
 
