@@ -87,6 +87,8 @@ npm install
 
 ## Ejecución
 
+> **Importante:** Expo debe ejecutarse desde `app/`, porque ahí está su `package.json`. Si corrés `npx expo start` en la raíz del repositorio, Expo falla con `The expected package.json path ... does not exist`.
+
 ### 1. Backend
 
 ```bash
