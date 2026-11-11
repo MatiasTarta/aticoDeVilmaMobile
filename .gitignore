@@ -39,3 +39,6 @@ yarn-error.*
 # generated native folders
 /ios
 /android
+
+# Expo regenera este archivo dentro de app/; las reglas viven en la raíz
+/app/.gitignore
