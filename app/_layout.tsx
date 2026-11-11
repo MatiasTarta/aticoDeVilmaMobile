@@ -1,4 +1,3 @@
-import { Fraunces_400Regular } from '@expo-google-fonts/fraunces/400Regular'
 import { Fraunces_400Regular_Italic } from '@expo-google-fonts/fraunces/400Regular_Italic'
 import { Fraunces_600SemiBold } from '@expo-google-fonts/fraunces/600SemiBold'
 import { useFonts } from 'expo-font'
@@ -15,7 +14,6 @@ SplashScreen.preventAutoHideAsync()
 export default function RootLayout() {
   const [loaded, error] = useFonts({
     [fonts.mono]: require('../assets/fonts/SpaceMono-Regular.ttf'),
-    [fonts.displayRegular]: Fraunces_400Regular,
     [fonts.displayItalic]: Fraunces_400Regular_Italic,
     [fonts.display]: Fraunces_600SemiBold,
   })

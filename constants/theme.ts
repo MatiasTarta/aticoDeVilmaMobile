@@ -38,7 +38,6 @@ export const radii = { xs: 2, sm: 4, md: 6, lg: 10, pill: 100 } as const;
 /** Familias empaquetadas; el cuerpo usa la sans del sistema. */
 export const fonts = {
   display: 'Fraunces_600SemiBold',
-  displayRegular: 'Fraunces_400Regular',
   displayItalic: 'Fraunces_400Regular_Italic',
   mono: 'SpaceMono',
 } as const;
