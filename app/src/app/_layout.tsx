@@ -2,26 +2,42 @@ import { Fraunces_400Regular_Italic } from '@expo-google-fonts/fraunces/400Regul
 import { Fraunces_600SemiBold } from '@expo-google-fonts/fraunces/600SemiBold'
 import { useFonts } from 'expo-font'
 import { Stack } from 'expo-router'
-import * as SplashScreen from 'expo-splash-screen'
 import { StatusBar } from 'expo-status-bar'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context'
 
 import { colors, fonts } from '@/theme/theme'
 
-SplashScreen.preventAutoHideAsync()
+if (__DEV__) {
+  console.log('[arranque] Bundle evaluado')
+}
 
 export default function RootLayout() {
+  const renderLogged = useRef(false)
+
+  if (__DEV__ && !renderLogged.current) {
+    console.log('[arranque] RootLayout render')
+    renderLogged.current = true
+  }
+
   const [loaded, error] = useFonts({
     [fonts.mono]: require('../../assets/fonts/SpaceMono-Regular.ttf'),
     [fonts.displayItalic]: Fraunces_400Regular_Italic,
     [fonts.display]: Fraunces_600SemiBold,
   })
 
-  useEffect(() => { if (error) throw error }, [error])
-  useEffect(() => { if (loaded) SplashScreen.hideAsync() }, [loaded])
+  // Las fuentes son una mejora visual: nunca bloquean el arranque ni el splash.
+  useEffect(() => {
+    if (loaded) {
+      console.log('[arranque] Fuentes cargadas')
+    }
+  }, [loaded])
 
-  if (!loaded) return null
+  useEffect(() => {
+    if (error) {
+      console.warn('[arranque] No se pudieron cargar las fuentes; se usan las del sistema:', error)
+    }
+  }, [error])
 
   return (
     <SafeAreaProvider initialMetrics={initialWindowMetrics}>
