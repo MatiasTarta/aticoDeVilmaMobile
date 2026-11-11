@@ -4,6 +4,7 @@ import type { ApiResponse, Instrumento, NuevoInstrumento } from '@/types/instrum
 
 const API_PORT = 3000;
 const ERROR_CONEXION = 'No se pudo conectar al servidor.';
+const INSTRUMENTOS_POR_PAGINA = 50;
 
 function resolveApiBaseUrl(): string {
   const envUrl = process.env.EXPO_PUBLIC_API_URL;
@@ -33,14 +34,28 @@ async function pedir(ruta: string, init?: RequestInit): Promise<Response> {
 }
 
 export async function getInstrumentos(): Promise<Instrumento[]> {
-  const res = await pedir('/api/instrumentos?cantidad=50&from=0&incluirEnDesarrollo=1');
+  const instrumentos: Instrumento[] = [];
+  let desde = 0;
+  let total = 0;
 
-  if (!res.ok) {
-    throw new Error('No se pudo cargar el catálogo.');
-  }
+  do {
+    const res = await pedir(
+      `/api/instrumentos?cantidad=${INSTRUMENTOS_POR_PAGINA}&from=${desde}&incluirEnDesarrollo=1`,
+    );
 
-  const data = (await res.json()) as ApiResponse;
-  return data.datos ?? [];
+    if (!res.ok) {
+      throw new Error('No se pudo cargar el catálogo.');
+    }
+
+    const pagina = (await res.json()) as ApiResponse;
+    total = pagina.total;
+    instrumentos.push(...pagina.datos);
+    desde += pagina.datos.length;
+
+    if (pagina.datos.length === 0) break;
+  } while (desde < total);
+
+  return instrumentos;
 }
 
 export async function getInstrumento(id: number): Promise<Instrumento | null> {
