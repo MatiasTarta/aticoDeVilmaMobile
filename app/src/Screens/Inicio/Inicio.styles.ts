@@ -53,6 +53,7 @@ export const styles = StyleSheet.create({
     left: spacing.lg,
     borderWidth: 1,
     borderColor: 'rgba(239, 230, 214, 0.12)',
+    pointerEvents: 'none',
   },
   topMeta: {
     position: 'absolute',

@@ -14,6 +14,7 @@ export const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     overflow: 'hidden',
+    pointerEvents: 'none',
   },
   content: {
     flex: 1,

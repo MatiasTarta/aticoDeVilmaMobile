@@ -35,7 +35,7 @@ export default function Inicio() {
 
   return (
     <Screen backdrop={<HomeBackdrop />} contentStyle={styles.container}>
-      {width >= BREAKPOINTS.desktop ? <View style={styles.frame} pointerEvents="none" /> : null}
+      {width >= BREAKPOINTS.desktop ? <View style={styles.frame} /> : null}
 
       <View style={[styles.topMeta, { top: insets.top + spacing.lg }]}>
         <Text style={styles.meta}>N.º 001</Text>

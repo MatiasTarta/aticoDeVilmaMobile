@@ -27,7 +27,6 @@ export function Screen({
     <View style={[styles.root, style]}>
       {backdrop ? (
         <View
-          pointerEvents="none"
           style={styles.backdrop}
           accessibilityElementsHidden
           importantForAccessibility="no-hide-descendants"
