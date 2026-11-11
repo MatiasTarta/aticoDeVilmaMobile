@@ -1,15 +1,16 @@
 {
-  "name": "backend",
+  "name": "atico-de-vilma-backend",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "API del catálogo de instrumentos de El Ático de Vilma",
+  "main": "server.js",
+  "type": "commonjs",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "test": "node --test app.test.js funcional.test.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
   "dependencies": {
     "cors": "^2.8.6",
     "express": "^5.2.1"

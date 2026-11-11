@@ -1,0 +1,121 @@
+import { router, useFocusEffect } from 'expo-router';
+import { useCallback, useState } from 'react';
+import { FlatList, Platform, Text, View } from 'react-native';
+
+import { getInstrumentos } from '@/api/instrumentos';
+import { Button } from '@/components/Button/Button';
+import { InstrumentoCard } from '@/components/InstrumentoCard/InstrumentoCard';
+import { Screen } from '@/components/Screen/Screen';
+import { ScreenHeader } from '@/components/ScreenHeader/ScreenHeader';
+import { StateView } from '@/components/StateView/StateView';
+import { useResponsive } from '@/hooks/useResponsive';
+import { useVolver } from '@/hooks/useVolver';
+import type { Instrumento } from '@/types/instrumento';
+
+import { styles } from './Catalogo.styles';
+
+function summaryLabel(total: number): string {
+  return total === 1 ? '1 pieza' : `${total} piezas`;
+}
+
+export default function Catalogo() {
+  const [instrumentos, setInstrumentos] = useState<Instrumento[]>([]);
+  const [cargando, setCargando] = useState(true);
+  const [error, setError] = useState('');
+  const { columns, cardWidth } = useResponsive();
+  const volver = useVolver('/');
+
+  const cargarInstrumentos = useCallback(async () => {
+    setCargando(true);
+    setError('');
+    try {
+      setInstrumentos(await getInstrumentos());
+    } catch {
+      setError('No se pudo conectar al servidor.');
+    } finally {
+      setCargando(false);
+    }
+  }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      cargarInstrumentos();
+    }, [cargarInstrumentos]),
+  );
+
+  const handlePress = useCallback((id: number) => {
+    router.push(`/instrumento/${id}` as any);
+  }, []);
+
+  const renderItem = useCallback(
+    ({ item, index }: { item: Instrumento; index: number }) => (
+      <InstrumentoCard
+        instrumento={item}
+        onPress={handlePress}
+        width={cardWidth}
+        index={index}
+      />
+    ),
+    [handlePress, cardWidth],
+  );
+
+  const keyExtractor = useCallback((item: Instrumento) => String(item.id), []);
+
+  return (
+    <Screen
+      header={
+        <ScreenHeader
+          title="Instrumentos"
+          onBack={volver}
+          rightAction={
+            <Button
+              variant="icon"
+              label="＋"
+              onPress={() => router.push('/crear' as any)}
+              accessibilityLabel="Crear instrumento"
+            />
+          }
+        />
+      }
+    >
+      {error ? (
+        <StateView
+          variant="error"
+          message={error}
+          action={{ label: 'Reintentar', onPress: cargarInstrumentos }}
+        />
+      ) : cargando && instrumentos.length === 0 ? (
+        <StateView variant="loading" />
+      ) : (
+        <FlatList
+          data={instrumentos}
+          key={columns}
+          numColumns={columns}
+          extraData={cardWidth}
+          renderItem={renderItem}
+          keyExtractor={keyExtractor}
+          contentContainerStyle={styles.listContainer}
+          columnWrapperStyle={styles.gridRow}
+          ListHeaderComponent={
+            instrumentos.length > 0 ? (
+              <View style={styles.summary}>
+                <Text style={styles.summaryText}>{summaryLabel(instrumentos.length)}</Text>
+                <View style={styles.summaryRule} />
+              </View>
+            ) : null
+          }
+          ListEmptyComponent={
+            <StateView
+              variant="empty"
+              action={{ label: 'Crear ficha', onPress: () => router.push('/crear') }}
+            />
+          }
+          removeClippedSubviews={Platform.OS !== 'web'}
+          initialNumToRender={6}
+          maxToRenderPerBatch={8}
+          windowSize={7}
+        />
+      )}
+    </Screen>
+  );
+}
