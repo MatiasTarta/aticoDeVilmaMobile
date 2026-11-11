@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Pressable, StyleSheet, Text, type StyleProp, type ViewStyle } from 'react-native';
 
-import { colors, fonts, radii } from '@/constants/theme';
+import { colors, fonts, radii } from '@/lib/theme';
 
 type ButtonVariant = 'primary' | 'ink' | 'icon' | 'ghost';
 

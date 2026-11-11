@@ -13,9 +13,9 @@ import { Screen } from '@/components/ui/Screen';
 import { ScreenHeader } from '@/components/ui/ScreenHeader';
 import { StateView } from '@/components/ui/StateView';
 import { Tag } from '@/components/ui/Tag';
-import { colors, fonts, radii, spacing } from '@/constants/theme';
-import { useVolver } from '@/hooks/useVolver';
-import { getInstrumento } from '@/services/instrumentos';
+import { colors, fonts, radii, spacing } from '@/lib/theme';
+import { useVolver } from '@/lib/useVolver';
+import { getInstrumento } from '@/lib/api';
 import type { Instrumento } from '@/types/instrumento';
 
 export default function InstrumentoDetalle() {

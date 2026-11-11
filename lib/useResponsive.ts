@@ -1,6 +1,6 @@
 import { useWindowDimensions } from 'react-native';
 
-import { BREAKPOINTS, GRID_GAP, GRID_PADDING, MAX_CONTENT_WIDTH } from '@/constants/layout';
+import { BREAKPOINTS, GRID_GAP, GRID_PADDING, MAX_CONTENT_WIDTH } from '@/lib/layout';
 
 export function useResponsive() {
   const { width } = useWindowDimensions();

@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react';
 import { StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 
-import { MAX_CONTENT_WIDTH } from '@/constants/layout';
-import { colors } from '@/constants/theme';
+import { MAX_CONTENT_WIDTH } from '@/lib/layout';
+import { colors } from '@/lib/theme';
 
 interface ScreenProps {
   children: ReactNode;

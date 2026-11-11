@@ -5,8 +5,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import { Button } from '@/components/ui/Button'
 import { Screen } from '@/components/ui/Screen'
-import { colors, fonts, spacing } from '@/constants/theme'
-import { useResponsive } from '@/hooks/useResponsive'
+import { colors, fonts, spacing } from '@/lib/theme'
+import { useResponsive } from '@/lib/useResponsive'
 
 const FONDO = require('../../assets/images/attico-fondo.jpg')
 

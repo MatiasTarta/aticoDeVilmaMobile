@@ -3,9 +3,6 @@
 # dependencies (todos los node_modules, en cualquier nivel)
 **/node_modules/
 
-# scratch de herramientas (planes, reviews)
-.superpowers/
-
 # Expo
 .expo/
 dist/

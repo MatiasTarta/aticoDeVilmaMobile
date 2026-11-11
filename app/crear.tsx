@@ -14,9 +14,9 @@ import {
 import { Button } from '@/components/ui/Button';
 import { Screen } from '@/components/ui/Screen';
 import { ScreenHeader } from '@/components/ui/ScreenHeader';
-import { colors, fonts, radii, spacing } from '@/constants/theme';
-import { useVolver } from '@/hooks/useVolver';
-import { crearInstrumento } from '@/services/instrumentos';
+import { colors, fonts, radii, spacing } from '@/lib/theme';
+import { useVolver } from '@/lib/useVolver';
+import { crearInstrumento } from '@/lib/api';
 import type { Categoria } from '@/types/instrumento';
 
 const CATEGORIAS: { valor: Categoria; etiqueta: string }[] = [

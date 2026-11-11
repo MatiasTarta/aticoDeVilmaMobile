@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, type StyleProp, type ViewStyle } from 'react-native';
 
-import { fonts, radii } from '@/constants/theme';
+import { fonts, radii } from '@/lib/theme';
 
 interface TagProps {
   label: string;

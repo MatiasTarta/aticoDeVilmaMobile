@@ -7,11 +7,11 @@ import { Button } from '@/components/ui/Button';
 import { Screen } from '@/components/ui/Screen';
 import { ScreenHeader } from '@/components/ui/ScreenHeader';
 import { StateView } from '@/components/ui/StateView';
-import { GRID_GAP, GRID_PADDING } from '@/constants/layout';
-import { colors, fonts, spacing } from '@/constants/theme';
-import { useResponsive } from '@/hooks/useResponsive';
-import { useVolver } from '@/hooks/useVolver';
-import { getInstrumentos } from '@/services/instrumentos';
+import { GRID_GAP, GRID_PADDING } from '@/lib/layout';
+import { colors, fonts, spacing } from '@/lib/theme';
+import { useResponsive } from '@/lib/useResponsive';
+import { useVolver } from '@/lib/useVolver';
+import { getInstrumentos } from '@/lib/api';
 import type { Instrumento } from '@/types/instrumento';
 
 function summaryLabel(total: number): string {

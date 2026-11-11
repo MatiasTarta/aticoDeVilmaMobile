@@ -1,6 +1,6 @@
 import type { ImageSourcePropType } from 'react-native';
 
-import { colors } from '@/constants/theme';
+import { colors } from '@/lib/theme';
 
 const IMAGENES_LOCALES: Record<string, ImageSourcePropType> = {
   'piano.png': require('../../assets/images/piano.jpg'),

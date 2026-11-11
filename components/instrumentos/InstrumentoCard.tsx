@@ -10,9 +10,9 @@ import {
 } from 'react-native';
 
 import { Tag } from '@/components/ui/Tag';
-import { GRID_GAP } from '@/constants/layout';
-import { colors, fonts, radii, spacing } from '@/constants/theme';
-import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { GRID_GAP } from '@/lib/layout';
+import { colors, fonts, radii, spacing } from '@/lib/theme';
+import { useReducedMotion } from '@/lib/useReducedMotion';
 import type { Instrumento } from '@/types/instrumento';
 
 import { getCategoriaColor, resolveImagen, serial, tipoSonidoLegible } from './presentacion';

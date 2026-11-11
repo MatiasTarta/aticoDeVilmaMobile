@@ -2,8 +2,8 @@ import type { ReactNode } from 'react';
 import { StyleSheet, Text, View, type StyleProp, type ViewStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { MAX_CONTENT_WIDTH } from '@/constants/layout';
-import { colors, fonts, spacing } from '@/constants/theme';
+import { MAX_CONTENT_WIDTH } from '@/lib/layout';
+import { colors, fonts, spacing } from '@/lib/theme';
 
 import { Button } from './Button';
 

@@ -7,7 +7,7 @@ import { StatusBar } from 'expo-status-bar'
 import { useEffect } from 'react'
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context'
 
-import { colors, fonts } from '@/constants/theme'
+import { colors, fonts } from '@/lib/theme'
 
 SplashScreen.preventAutoHideAsync()
 
